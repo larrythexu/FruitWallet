@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: FruitWalletBackend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/fruitwallet}
+    username: ${SPRING_DATASOURCE_USERNAME:myuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:mypassword}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # TODO: change to update
+
+    database: postgresql
+    show-sql: true
+
+  # Colored logging
+  output:
+    ansi:
+      enabled: ALWAYS
+
