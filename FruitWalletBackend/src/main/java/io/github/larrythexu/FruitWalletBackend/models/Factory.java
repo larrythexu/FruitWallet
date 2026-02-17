@@ -4,13 +4,12 @@ import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,10 +26,9 @@ public class Factory extends BaseEntity {
   private Double maximumAmount;
 
   // Use UTC time
-  private Instant createdAt;
   private Instant lastClaimedAt;
 
   @ManyToOne
-  @JoinColumn(name = "account_id")
-  private Account account;
+  @JoinColumn(name = "owner_id")
+  private Account owner;
 }
