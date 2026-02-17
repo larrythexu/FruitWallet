@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class User extends BaseEntity {
+public class Account extends BaseEntity {
 
   private String username;
 
@@ -24,7 +24,8 @@ public class User extends BaseEntity {
   private Origin origin;
 
   // Use this to calculate our increasing balance
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//  @OneToMany(mappedBy = "account")
   private List<Factory> factoryList;
 
   // Balances
