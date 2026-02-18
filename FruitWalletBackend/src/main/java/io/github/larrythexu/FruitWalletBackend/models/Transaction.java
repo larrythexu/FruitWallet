@@ -9,13 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 @Entity
 public class Transaction extends BaseEntity {
 
@@ -28,7 +26,7 @@ public class Transaction extends BaseEntity {
   private Account receiver;
 
   private Origin currency; // which currency
-  private Double amount;
+  private float amount;
   private Instant timestamp;
 
   //  TODO: converting instant to localtime?

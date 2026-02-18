@@ -14,7 +14,6 @@ public class AccountService {
   private final AccountRepository accountRepository;
 
   private static final AtomicInteger COUNTER = new AtomicInteger(0);
-  private static final double START_BALANCE = 0.0;
 
   public AccountService(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
@@ -28,14 +27,7 @@ public class AccountService {
     int originEnum = COUNTER.intValue() % 3;
     Origin newOrigin = Origin.ofIndex(originEnum).orElse(Origin.APPLE);
 
-    Account newAccount =
-        Account.builder()
-            .username(username)
-            .origin(newOrigin)
-            .appleBalance(START_BALANCE)
-            .bananaBalance(START_BALANCE)
-            .orangeBalance(START_BALANCE)
-            .build();
+    Account newAccount = new Account(username, newOrigin);
     accountRepository.save(newAccount);
 
     // Increment account counter

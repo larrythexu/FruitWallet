@@ -2,6 +2,7 @@ package io.github.larrythexu.FruitWalletBackend.models;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class Account extends BaseEntity {
 
+  private static final float START_BALANCE = 0.0f;
+
   private String username;
 
   @Enumerated(EnumType.STRING)
@@ -25,10 +28,7 @@ public class Account extends BaseEntity {
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Factory> factoryList;
 
-  // Balances - todo: shrink this into one class?
-  private Double appleBalance;
-  private Double bananaBalance;
-  private Double orangeBalance;
+  @Embedded private Wallet wallet;
 
   @OneToMany(mappedBy = "sender")
   private List<Transaction> sentTransactions;
@@ -36,10 +36,27 @@ public class Account extends BaseEntity {
   @OneToMany(mappedBy = "receiver")
   private List<Transaction> receivedTransactions;
 
-  public void addFactory(Factory factory) {
-    factoryList.add(factory);
+  public Account(String username, Origin origin) {
+    this.username = username;
+    this.origin = origin;
+    this.factoryList = new ArrayList<>();
+    this.wallet = new Wallet();
+    this.sentTransactions = new ArrayList<>();
+    this.receivedTransactions = new ArrayList<>();
   }
 
+  public void addFactory(Factory factory) {
+    if (factoryList == null) {
+      factoryList = new ArrayList<>();
+    }
+
+    factoryList.add(factory);
+    factory.setOwner(this);
+  }
+
+  public boolean canSend(Origin currency, float transactionAmount) {
+    return wallet.getBalanceFromIndex(currency.ordinal()) >= transactionAmount;
+  }
   // GOOGLE OAUTH STUFF for later?
   //  @Column(unique = true)
   //  private String googleId;

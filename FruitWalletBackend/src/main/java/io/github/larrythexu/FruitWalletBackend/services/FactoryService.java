@@ -1,8 +1,12 @@
 package io.github.larrythexu.FruitWalletBackend.services;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import io.github.larrythexu.FruitWalletBackend.repositories.FactoryRepository;
+import jakarta.transaction.Transactional;
+import java.time.Duration;
+import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +17,34 @@ public class FactoryService {
   private final FactoryRepository factoryRepository;
 
   // TODO: maybe move this to factory config?
-  private static final double BASIC_PRODUCTION_RATE = 1.0;
-  private static final double BASIC_START_AMOUNT = 0.0;
-  private static final double BASIC_MAX_AMOUNT = 100.0;
+  private static final float BASIC_PRODUCTION_RATE = 1.0f;
+  private static final float BASIC_MAX_AMOUNT = 100.0f;
 
   public FactoryService(FactoryRepository factoryRepository) {
     this.factoryRepository = factoryRepository;
   }
 
-  public Factory createDefaultFactory(Origin origin) {
-    Factory newFactory =
-        Factory.builder()
-            .origin(origin)
-            .productionRate(BASIC_PRODUCTION_RATE)
-            .currentAmount(BASIC_START_AMOUNT)
-            .maximumAmount(BASIC_MAX_AMOUNT)
-            .build();
+  public Factory createDefaultFactory(Account account, Origin origin) {
+    Factory newFactory = new Factory(account, origin, BASIC_PRODUCTION_RATE, BASIC_MAX_AMOUNT);
 
     factoryRepository.save(newFactory);
     return newFactory;
+  }
+
+  /**
+   * Claim points based on the last time claimed and rate of Factory production
+   *
+   * @param factory: which factory to claim from
+   * @return amount of points (capped at factory max)
+   */
+  @Transactional
+  public float claimFactoryPoints(Factory factory, Instant claimTime) {
+    Duration daysBetween = Duration.between(factory.getLastClaimedAt(), claimTime);
+    float gainedPoints = daysBetween.toDays() * factory.getProductionRate();
+
+    // Update factory claimed status
+    factory.setLastClaimedAt(claimTime);
+
+    return Float.min(factory.getMaximumAmount(), gainedPoints);
   }
 }

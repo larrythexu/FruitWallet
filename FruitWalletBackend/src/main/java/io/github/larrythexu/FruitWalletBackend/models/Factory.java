@@ -9,21 +9,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 @Entity
 public class Factory extends BaseEntity {
 
   private Origin origin;
-  private Double productionRate;
+  private float productionRate; // productionRate PER day
 
-  private Double currentAmount;
-  private Double maximumAmount;
+  //  private float currentAmount;
+  private float maximumAmount;
 
   // Use UTC time
   private Instant lastClaimedAt;
@@ -31,4 +29,13 @@ public class Factory extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "owner_id")
   private Account owner;
+
+  public Factory(Account owner, Origin origin, float productionRate, float maximumAmount) {
+    this.setOwner(owner);
+    this.setOrigin(origin);
+    this.setProductionRate(productionRate);
+    this.setMaximumAmount(maximumAmount);
+
+    this.setLastClaimedAt(this.getCreatedAt());
+  }
 }

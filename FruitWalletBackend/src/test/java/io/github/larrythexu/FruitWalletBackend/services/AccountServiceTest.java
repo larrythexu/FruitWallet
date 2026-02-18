@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class AccountServiceTest {
 
   private final String TEST_USERNAME_1 = "TEST";
   private final String TEST_USERNAME_2 = "TEST_2";
-  private final double DEFAULT_BALANCE = 0.0;
+  private final float DEFAULT_BALANCE = 0.0f;
 
   @Test
   void testCreateAccount() {
@@ -37,7 +38,9 @@ public class AccountServiceTest {
     verify(accountRepository).save(newAccount);
     assertEquals(TEST_USERNAME_1, newAccount.getUsername());
     assertEquals(Origin.APPLE, newAccount.getOrigin());
-    assertEquals(DEFAULT_BALANCE, newAccount.getAppleBalance());
+    assertEquals(DEFAULT_BALANCE, newAccount.getWallet().getAppleBalance());
+    assertEquals(List.of(), newAccount.getFactoryList());
+    assertEquals(List.of(), newAccount.getSentTransactions());
 
     // Testing second user creation
     Account newAccount2 = accountService.createAccount(TEST_USERNAME_2);
