@@ -2,16 +2,19 @@ package io.github.larrythexu.FruitWalletBackend.models;
 
 import jakarta.persistence.Embeddable;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
+import lombok.*;
+
+@Data
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallet {
-  private float appleBalance;
-  private float bananaBalance;
-  private float orangeBalance;
+  private float appleBalance = 0.0f;
+  private float bananaBalance = 0.0f;
+  private float orangeBalance = 0.0f;
 
   public float getBalanceFromIndex(int index) {
     List<Float> balances = List.of(appleBalance, bananaBalance, orangeBalance);
