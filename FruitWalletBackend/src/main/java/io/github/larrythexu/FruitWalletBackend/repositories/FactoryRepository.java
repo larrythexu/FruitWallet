@@ -9,15 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface FactoryRepository extends JpaRepository<Factory, Long> {
 
-  List<Factory> findByAccount_Id(Long id);
+  List<Factory> findByOwner_Id(Long id);
 
-  List<Factory> findByAccount_Username(String username);
+  List<Factory> findByOwner_Username(String username);
 
   List<Factory> findByOrigin(Origin origin);
 
   List<Factory> findByProductionRate(Double productionRate);
-
-  List<Factory> findByCurrentAmount(Double currentAmount);
 
   List<Factory> findByMaximumAmount(Double maximumAmount);
 
@@ -36,7 +34,4 @@ public interface FactoryRepository extends JpaRepository<Factory, Long> {
   List<Factory> findByCreatedAtBetween(Instant startDate, Instant endDate);
 
   List<Factory> findByLastClaimedAtBetween(Instant startDate, Instant endDate);
-
-  @Query("SELECT f FROM Factory f WHERE f.currentAmount >= f.maximumAmount")
-  List<Factory> findMaxCappedFactories();
 }
