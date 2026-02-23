@@ -20,7 +20,6 @@ public class Factory extends BaseEntity {
   private Origin origin;
   private float productionRate; // productionRate PER day
 
-  //  private float currentAmount;
   private float maximumAmount;
 
   // Use UTC time
@@ -35,7 +34,5 @@ public class Factory extends BaseEntity {
     this.setOrigin(origin);
     this.setProductionRate(productionRate);
     this.setMaximumAmount(maximumAmount);
-
-    this.setLastClaimedAt(this.getCreatedAt());
   }
 }

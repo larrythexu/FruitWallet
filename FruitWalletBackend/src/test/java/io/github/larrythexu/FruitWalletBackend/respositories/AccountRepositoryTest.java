@@ -1,28 +1,21 @@
 package io.github.larrythexu.FruitWalletBackend.respositories;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
-import io.github.larrythexu.FruitWalletBackend.models.Wallet;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 @DataJpaTest
 public class AccountRepositoryTest {
 
-  @Autowired
-  private AccountRepository accountRepository;
+  @Autowired private AccountRepository accountRepository;
 
   private Account alice;
   private Account bob;

@@ -39,7 +39,10 @@ public class FactoryService {
    */
   @Transactional
   public float claimFactoryPoints(Factory factory, Instant claimTime) {
-    Duration daysBetween = Duration.between(factory.getLastClaimedAt(), claimTime);
+    Instant lastClaim =
+        factory.getLastClaimedAt() == null ? factory.getCreatedAt() : factory.getLastClaimedAt();
+
+    Duration daysBetween = Duration.between(lastClaim, claimTime);
     float gainedPoints = daysBetween.toDays() * factory.getProductionRate();
 
     // Update factory claimed status

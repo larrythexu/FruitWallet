@@ -5,7 +5,6 @@ import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import java.time.Instant;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface FactoryRepository extends JpaRepository<Factory, Long> {
 

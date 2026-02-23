@@ -2,7 +2,6 @@ package io.github.larrythexu.FruitWalletBackend.models;
 
 import jakarta.persistence.Embeddable;
 import java.util.List;
-
 import lombok.*;
 
 @Data
