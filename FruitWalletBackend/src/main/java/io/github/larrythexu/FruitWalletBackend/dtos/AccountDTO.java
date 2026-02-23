@@ -5,7 +5,7 @@ import java.util.List;
 public record AccountDTO(
     String username,
     String origin,
-    Double appleBalance,
-    Double bananaBalance,
-    Double orangeBalance,
+    float appleBalance,
+    float bananaBalance,
+    float orangeBalance,
     List<FactoryDTO> factoryDTOList) {}

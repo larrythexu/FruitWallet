@@ -46,10 +46,6 @@ public class Account extends BaseEntity {
   }
 
   public void addFactory(Factory factory) {
-    if (factoryList == null) {
-      factoryList = new ArrayList<>();
-    }
-
     factoryList.add(factory);
     factory.setOwner(this);
   }

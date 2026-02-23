@@ -1,6 +1,8 @@
 package io.github.larrythexu.FruitWalletBackend.services;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.domain.exceptions.AccountNotFoundException;
+import io.github.larrythexu.FruitWalletBackend.domain.exceptions.UsernameAlreadyExistsException;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,7 +23,7 @@ public class AccountService {
 
   public Account createAccount(String username) {
     if (accountRepository.findByUsername(username).isPresent()) {
-      throw new IllegalArgumentException("This username already exists");
+      throw new UsernameAlreadyExistsException(username);
     }
     // Assign origin on account creation
     int originEnum = COUNTER.intValue() % 3;
@@ -34,5 +36,15 @@ public class AccountService {
     COUNTER.incrementAndGet();
 
     return newAccount;
+  }
+
+  public Account getAccountByID(long id) {
+    return accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+  }
+
+  public Account getAccountByUsername(String username) {
+    return accountRepository
+        .findByUsername(username)
+        .orElseThrow(() -> new AccountNotFoundException(username));
   }
 }

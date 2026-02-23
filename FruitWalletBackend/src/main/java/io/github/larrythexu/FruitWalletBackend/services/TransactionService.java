@@ -1,6 +1,7 @@
 package io.github.larrythexu.FruitWalletBackend.services;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.domain.exceptions.InsufficientFundsException;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Transaction;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
@@ -37,7 +38,7 @@ public class TransactionService {
       Account sender, Account receiver, Origin currency, float amount, Instant timestamp) {
     // Validate transaction is possible
     if (!sender.canSend(currency, amount)) {
-      throw new IllegalArgumentException("Account balance insufficient for amount: " + amount);
+      throw new InsufficientFundsException(sender, currency, amount);
     }
 
     Transaction newTransaction = new Transaction(sender, receiver, currency, amount, timestamp);

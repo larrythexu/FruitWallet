@@ -1,5 +1,6 @@
 package io.github.larrythexu.FruitWalletBackend.models;
 
+import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
 import jakarta.persistence.Embeddable;
 import java.util.List;
 import lombok.*;
@@ -22,5 +23,23 @@ public class Wallet {
     }
 
     return balances.get(index);
+  }
+
+  public float getBalanceFromOrigin(Origin origin) {
+    switch (origin) {
+      case APPLE -> {
+        return appleBalance;
+      }
+      case BANANA -> {
+        return bananaBalance;
+      }
+      case ORANGE -> {
+        return orangeBalance;
+      }
+
+      default -> {
+        return 0;
+      }
+    }
   }
 }
