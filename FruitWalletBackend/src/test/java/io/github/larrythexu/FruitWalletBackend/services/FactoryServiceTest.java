@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.dtos.ClaimDTO;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import io.github.larrythexu.FruitWalletBackend.repositories.FactoryRepository;
@@ -44,11 +45,12 @@ public class FactoryServiceTest {
     when(TEST_FACTORY.getLastClaimedAt()).thenReturn(lastClaimedTime);
     when(TEST_FACTORY.getProductionRate()).thenReturn(1.0f);
     when(TEST_FACTORY.getMaximumAmount()).thenReturn(100.0f);
+    when(TEST_FACTORY.getOrigin()).thenReturn(Origin.APPLE);
 
-    float claimed = factoryService.claimFactoryPoints(TEST_FACTORY, claimTime);
+    ClaimDTO claimed = factoryService.claimFactoryPoints(TEST_FACTORY, claimTime);
 
     verify(TEST_FACTORY).setLastClaimedAt(claimTime);
-    assertEquals(2.0f, claimed);
+    assertEquals(2.0f, claimed.balance());
   }
 
   @Test
@@ -59,10 +61,11 @@ public class FactoryServiceTest {
     when(TEST_FACTORY.getLastClaimedAt()).thenReturn(lastClaimedTime);
     when(TEST_FACTORY.getProductionRate()).thenReturn(10.0f);
     when(TEST_FACTORY.getMaximumAmount()).thenReturn(15.0f);
+    when(TEST_FACTORY.getOrigin()).thenReturn(Origin.APPLE);
 
-    float claimed = factoryService.claimFactoryPoints(TEST_FACTORY, claimTime);
+    ClaimDTO claimed = factoryService.claimFactoryPoints(TEST_FACTORY, claimTime);
 
     verify(TEST_FACTORY).setLastClaimedAt(claimTime);
-    assertEquals(15.0f, claimed);
+    assertEquals(15.0f, claimed.balance());
   }
 }

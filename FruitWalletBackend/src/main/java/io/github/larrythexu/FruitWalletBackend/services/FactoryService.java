@@ -1,6 +1,8 @@
 package io.github.larrythexu.FruitWalletBackend.services;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.domain.exceptions.FactoryNotFoundException;
+import io.github.larrythexu.FruitWalletBackend.dtos.ClaimDTO;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import io.github.larrythexu.FruitWalletBackend.repositories.FactoryRepository;
@@ -24,6 +26,10 @@ public class FactoryService {
     this.factoryRepository = factoryRepository;
   }
 
+  public Factory getFactoryById(long id) {
+    return factoryRepository.findById(id).orElseThrow(() -> new FactoryNotFoundException(id));
+  }
+
   public Factory createDefaultFactory(Account account, Origin origin) {
     Factory newFactory = new Factory(account, origin, BASIC_PRODUCTION_RATE, BASIC_MAX_AMOUNT);
 
@@ -38,16 +44,17 @@ public class FactoryService {
    * @return amount of points (capped at factory max)
    */
   @Transactional
-  public float claimFactoryPoints(Factory factory, Instant claimTime) {
+  public ClaimDTO claimFactoryPoints(Factory factory, Instant claimTime) {
     Instant lastClaim =
         factory.getLastClaimedAt() == null ? factory.getCreatedAt() : factory.getLastClaimedAt();
 
     Duration daysBetween = Duration.between(lastClaim, claimTime);
-    float gainedPoints = daysBetween.toDays() * factory.getProductionRate();
+    float possiblePoints = daysBetween.toDays() * factory.getProductionRate();
 
     // Update factory claimed status
     factory.setLastClaimedAt(claimTime);
 
-    return Float.min(factory.getMaximumAmount(), gainedPoints);
+    float actualPoints =  Float.min(factory.getMaximumAmount(), possiblePoints);
+    return new ClaimDTO(factory.getOrigin().toString(), actualPoints);
   }
 }

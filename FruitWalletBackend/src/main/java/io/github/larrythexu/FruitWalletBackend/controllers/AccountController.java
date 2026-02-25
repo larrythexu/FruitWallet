@@ -1,11 +1,9 @@
 package io.github.larrythexu.FruitWalletBackend.controllers;
 
 import io.github.larrythexu.FruitWalletBackend.dtos.AccountDTO;
-import io.github.larrythexu.FruitWalletBackend.dtos.CreateUserReq;
 import io.github.larrythexu.FruitWalletBackend.dtos.DTOMapper;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.services.AccountService;
-import io.github.larrythexu.FruitWalletBackend.services.SignupService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
   private final AccountService accountService;
-  private final SignupService signupService;
   private final DTOMapper dtoMapper;
 
   @GetMapping("/account/{id}")
@@ -27,13 +24,6 @@ public class AccountController {
   @GetMapping("/account/{username}")
   public AccountDTO getAccount(@PathVariable String username) {
     Account account = accountService.getAccountByUsername(username);
-    return dtoMapper.toAccountDTO(account);
-  }
-
-  // TODO: add more to this once we have oauth
-  @PostMapping("/account/signup")
-  public AccountDTO signupAccount(@RequestBody CreateUserReq createUserReq) {
-    Account account = signupService.signupAccount(createUserReq.username());
     return dtoMapper.toAccountDTO(account);
   }
 }

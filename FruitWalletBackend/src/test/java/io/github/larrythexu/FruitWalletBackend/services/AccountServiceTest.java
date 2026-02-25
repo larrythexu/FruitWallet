@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
+import io.github.larrythexu.FruitWalletBackend.domain.exceptions.UsernameAlreadyExistsException;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
 import java.util.List;
@@ -55,7 +56,7 @@ public class AccountServiceTest {
         .thenReturn(Optional.of(existingAccount));
 
     assertThrows(
-        IllegalArgumentException.class,
+        UsernameAlreadyExistsException.class,
         () -> {
           accountService.createAccount(TEST_USERNAME_1);
         });

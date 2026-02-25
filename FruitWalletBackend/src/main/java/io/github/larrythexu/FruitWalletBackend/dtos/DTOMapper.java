@@ -4,6 +4,8 @@ import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import io.github.larrythexu.FruitWalletBackend.models.Transaction;
 import java.util.List;
+
+import io.github.larrythexu.FruitWalletBackend.models.Wallet;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,5 +38,13 @@ public class DTOMapper {
         transaction.getCurrency().toString(),
         transaction.getAmount(),
         transaction.getTimestamp());
+  }
+
+  public WalletDTO toWalletDTO(Wallet wallet) {
+    return new WalletDTO(
+        wallet.getAppleBalance(),
+        wallet.getBananaBalance(),
+        wallet.getOrangeBalance()
+    );
   }
 }
