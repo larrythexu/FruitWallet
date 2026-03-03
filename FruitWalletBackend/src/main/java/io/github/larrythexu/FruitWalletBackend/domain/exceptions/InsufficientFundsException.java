@@ -1,16 +1,17 @@
 package io.github.larrythexu.FruitWalletBackend.domain.exceptions;
 
 import io.github.larrythexu.FruitWalletBackend.domain.enums.Origin;
-import io.github.larrythexu.FruitWalletBackend.models.Account;
 
 public class InsufficientFundsException extends RuntimeException {
-  public InsufficientFundsException(Account account, Origin currency, float amount) {
+  public InsufficientFundsException(Origin currency, float amount, float currentBalance) {
     super(
         "Account balance insufficient, "
             + currency.toString()
             + " amount: "
-            + account.getWallet().getBalanceFromOrigin(currency)
+            + currentBalance
             + ", requested amount: "
-            + amount);
+            + amount
+            + ". Missing: "
+            + (amount - currentBalance));
   }
 }

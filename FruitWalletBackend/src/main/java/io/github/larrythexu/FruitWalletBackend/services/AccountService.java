@@ -5,6 +5,7 @@ import io.github.larrythexu.FruitWalletBackend.domain.exceptions.AccountNotFound
 import io.github.larrythexu.FruitWalletBackend.domain.exceptions.UsernameAlreadyExistsException;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.repositories.AccountRepository;
+import jakarta.transaction.Transactional;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,40 @@ public class AccountService {
     return accountRepository
         .findByUsername(username)
         .orElseThrow(() -> new AccountNotFoundException(username));
+  }
+
+  //
+  //  @Transactional
+  //  public void addBalanceById(long id, Origin currency, float amount) {
+  //    Account account = getAccountByID(id);
+  //    addBalance(account, currency, amount);
+  //  }
+  //
+  //  @Transactional
+  //  public void addBalanceByUsername(String username, Origin currency, float amount) {
+  //    Account account = getAccountByUsername(username);
+  //    addBalance(account, currency, amount);
+  //  }
+  //
+  //  @Transactional
+  //  public void subtractBalanceById(long id, Origin currency, float amount) {
+  //    Account account = getAccountByID(id);
+  //    subtractBalance(account, currency, amount);
+  //  }
+  //
+  //  @Transactional
+  //  public void subtractBalanceByUsername(String username, Origin currency, float amount) {
+  //    Account account = getAccountByUsername(username);
+  //    subtractBalance(account, currency, amount);
+  //  }
+
+  @Transactional
+  public void addBalance(Account account, Origin currency, float amount) {
+    account.getWallet().addBalance(currency, amount);
+  }
+
+  @Transactional
+  public void subtractBalance(Account account, Origin currency, float amount) {
+    account.getWallet().subtractBalance(currency, amount);
   }
 }

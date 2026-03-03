@@ -25,12 +25,21 @@ public class Wallet {
     return balances.get(index);
   }
 
-  public void updateBalance(Origin origin, float amount) {
+  public void addBalance(Origin origin, float amount) {
     switch (origin) {
       case APPLE -> appleBalance += amount;
       case BANANA -> bananaBalance += amount;
       case ORANGE -> orangeBalance += amount;
-      default ->  throw new IllegalArgumentException("Invalid wallet origin: " + origin);
+      default -> throw new IllegalArgumentException("Invalid wallet origin: " + origin);
+    }
+  }
+
+  public void subtractBalance(Origin origin, float amount) {
+    switch (origin) {
+      case APPLE -> appleBalance -= amount;
+      case BANANA -> bananaBalance -= amount;
+      case ORANGE -> orangeBalance -= amount;
+      default -> throw new IllegalArgumentException("Invalid wallet origin: " + origin);
     }
   }
 

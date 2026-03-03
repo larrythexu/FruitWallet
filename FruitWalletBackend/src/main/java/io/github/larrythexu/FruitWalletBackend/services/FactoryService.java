@@ -54,7 +54,7 @@ public class FactoryService {
     // Update factory claimed status
     factory.setLastClaimedAt(claimTime);
 
-    float actualPoints =  Float.min(factory.getMaximumAmount(), possiblePoints);
+    float actualPoints = Float.min(factory.getMaximumAmount(), possiblePoints);
     return new ClaimDTO(factory.getOrigin().toString(), actualPoints);
   }
 }

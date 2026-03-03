@@ -3,12 +3,11 @@ package io.github.larrythexu.FruitWalletBackend.dtos;
 import io.github.larrythexu.FruitWalletBackend.models.Account;
 import io.github.larrythexu.FruitWalletBackend.models.Factory;
 import io.github.larrythexu.FruitWalletBackend.models.Transaction;
-import java.util.List;
-
 import io.github.larrythexu.FruitWalletBackend.models.Wallet;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class DTOMapper {
   public AccountDTO toAccountDTO(Account account) {
     List<FactoryDTO> factoryList =
@@ -42,9 +41,6 @@ public class DTOMapper {
 
   public WalletDTO toWalletDTO(Wallet wallet) {
     return new WalletDTO(
-        wallet.getAppleBalance(),
-        wallet.getBananaBalance(),
-        wallet.getOrangeBalance()
-    );
+        wallet.getAppleBalance(), wallet.getBananaBalance(), wallet.getOrangeBalance());
   }
 }

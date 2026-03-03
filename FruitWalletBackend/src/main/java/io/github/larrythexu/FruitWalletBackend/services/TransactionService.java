@@ -28,18 +28,39 @@ public class TransactionService {
     this.accountService = accountService;
   }
 
+  @Transactional
+  public Transaction makeTransactionById(
+      long senderId, long receiverId, Origin currency, float amount, Instant timestamp) {
+    Account sender = accountService.getAccountByID(senderId);
+    Account receiver = accountService.getAccountByID(receiverId);
+
+    return makeTransaction(sender, receiver, currency, amount, timestamp);
+  }
+
+  @Transactional
+  public Transaction makeTransactionByUsername(
+      String senderName, String receiverName, Origin currency, float amount, Instant timestamp) {
+    Account sender = accountService.getAccountByUsername(senderName);
+    Account receiver = accountService.getAccountByUsername(receiverName);
+
+    return makeTransaction(sender, receiver, currency, amount, timestamp);
+  }
+
   /**
    * Make a transaction from one account to another
    *
    * @return the transaction object representing the details of the transaction
    */
-  @Transactional
-  public Transaction makeTransaction(
+  private Transaction makeTransaction(
       Account sender, Account receiver, Origin currency, float amount, Instant timestamp) {
     // Validate transaction is possible
     if (!sender.canSend(currency, amount)) {
-      throw new InsufficientFundsException(sender, currency, amount);
+      float currentBalance = sender.getWallet().getBalanceFromOrigin(currency);
+      throw new InsufficientFundsException(currency, amount, currentBalance);
     }
+
+    accountService.subtractBalance(sender, currency, amount);
+    accountService.addBalance(receiver, currency, amount);
 
     Transaction newTransaction = new Transaction(sender, receiver, currency, amount, timestamp);
     transactionRepository.save(newTransaction);

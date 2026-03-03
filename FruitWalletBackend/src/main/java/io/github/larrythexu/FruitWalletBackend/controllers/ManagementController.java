@@ -26,5 +26,5 @@ public class ManagementController {
     return dtoMapper.toAccountDTO(account);
   }
 
-//  @PostMapping("/manage/claim-all")
+  //  @PostMapping("/manage/claim-all")
 }
