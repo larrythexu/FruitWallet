@@ -47,7 +47,8 @@ public class TransactionServiceTest {
     when(TEST_SENDER.canSend(CURRENCY, AMOUNT)).thenReturn(true);
 
     Transaction result =
-        transactionService.makeTransactionById(SENDER_ID, RECEIVER_ID, CURRENCY, AMOUNT, timestamp);
+        transactionService.makeTransactionById(
+            SENDER_ID, RECEIVER_ID, CURRENCY.toString(), AMOUNT, timestamp);
 
     verify(accountService).getAccountByID(SENDER_ID);
     verify(accountService).getAccountByID(RECEIVER_ID);
@@ -78,7 +79,7 @@ public class TransactionServiceTest {
         InsufficientFundsException.class,
         () ->
             transactionService.makeTransactionById(
-                SENDER_ID, RECEIVER_ID, CURRENCY, AMOUNT, Instant.now()));
+                SENDER_ID, RECEIVER_ID, CURRENCY.toString(), AMOUNT, Instant.now()));
 
     verify(transactionRepository, never()).save(any());
     verify(accountService, never()).subtractBalance(any(), any(), anyFloat());
